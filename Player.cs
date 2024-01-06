@@ -13,7 +13,7 @@ public partial class Player : RigidBody3D
 	{
 		if (Input.IsActionPressed("ui_accept"))
 		{
-			ApplyCentralForce(MultiplyByFloat(Vector3.Up,  (float)delta * 1000));
+			ApplyCentralForce(MultiplyByFloat(Transform.Basis.Y,  (float)delta * 1000));
 		}
 
 		if (Input.IsActionPressed("ui_left"))
