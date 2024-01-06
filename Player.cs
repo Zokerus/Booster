@@ -1,10 +1,19 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class Player : RigidBody3D
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	/// <summary>
+	/// Text
+	/// </summary>
+	[Export(PropertyHint.Range, "750, 3000, 1.0")]
+	public float thrust = 1000.0f;
+    [Export]
+    public float torque = 100.0f;
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 	}
 
@@ -13,16 +22,16 @@ public partial class Player : RigidBody3D
 	{
 		if (Input.IsActionPressed("boost"))
 		{
-			ApplyCentralForce(MultiplyByFloat(Transform.Basis.Y,  (float)delta * 1000));
+			ApplyCentralForce(MultiplyByFloat(Transform.Basis.Y,  (float)delta * thrust));
 		}
 
 		if (Input.IsActionPressed("rotate_left"))
 		{
-			ApplyTorque(new Vector3(0, 0, 100 * (float)delta));
+			ApplyTorque(new Vector3(0, 0, torque * (float)delta));
 		}
         if (Input.IsActionPressed("rotate_right"))
         {
-            ApplyTorque(new Vector3(0, 0, -100 * (float)delta));
+            ApplyTorque(new Vector3(0, 0, -torque * (float)delta));
         }
     }
 
@@ -30,4 +39,21 @@ public partial class Player : RigidBody3D
     {
         return new Vector3(left.X * right, left.Y * right, left.Z * right);
     }
+
+	public void OnBodyEntered(Node body) 
+	{
+		if(body.IsInGroup("Goal"))
+		{
+
+		}
+		else if(body.IsInGroup("Hazard"))
+		{
+			CrashSequence();
+		}
+	}
+
+	public void CrashSequence()
+	{
+		Debug.Print("Kaboom");
+	}
 }
