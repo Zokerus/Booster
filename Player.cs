@@ -11,16 +11,16 @@ public partial class Player : RigidBody3D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionPressed("ui_accept"))
+		if (Input.IsActionPressed("boost"))
 		{
 			ApplyCentralForce(MultiplyByFloat(Transform.Basis.Y,  (float)delta * 1000));
 		}
 
-		if (Input.IsActionPressed("ui_left"))
+		if (Input.IsActionPressed("rotate_left"))
 		{
 			ApplyTorque(new Vector3(0, 0, 100 * (float)delta));
 		}
-        if (Input.IsActionPressed("ui_right"))
+        if (Input.IsActionPressed("rotate_right"))
         {
             ApplyTorque(new Vector3(0, 0, -100 * (float)delta));
         }
