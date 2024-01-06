@@ -70,9 +70,9 @@ public partial class Player : RigidBody3D
 
 	private void CompleteLevel(string next_level_file)
 	{
+        SetProcess(false);
         Tween tween = CreateTween();
         tween.TweenInterval(1.0f);
-
         tween.TweenCallback(Callable.From(() => GetTree().ChangeSceneToFile(next_level_file)));
         tween.Play();
     }
