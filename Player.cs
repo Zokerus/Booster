@@ -44,16 +44,23 @@ public partial class Player : RigidBody3D
 	{
 		if(body.IsInGroup("Goal"))
 		{
+			CompleteLevel();
 
-		}
+        }
 		else if(body.IsInGroup("Hazard"))
 		{
 			CrashSequence();
 		}
 	}
 
-	public void CrashSequence()
+	private void CrashSequence()
 	{
-		Debug.Print("Kaboom");
+		GetTree().ReloadCurrentScene();
 	}
+
+	private void CompleteLevel()
+	{
+		GetTree().Quit();
+
+    }
 }
