@@ -12,6 +12,8 @@ public partial class Player : RigidBody3D
     [Export]
     public float torque = 100.0f;
 
+	private bool m_isTransitioning = false;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -42,25 +44,36 @@ public partial class Player : RigidBody3D
 
 	public void OnBodyEntered(Node body) 
 	{
-		if(body.IsInGroup("Goal"))
+		if (!m_isTransitioning)
 		{
-			CompleteLevel();
-
-        }
-		else if(body.IsInGroup("Hazard"))
-		{
-			CrashSequence();
+			if (body.IsInGroup("Goal"))
+			{
+				m_isTransitioning = true;
+				CompleteLevel(((LandingPad)body).NextLevelFile);
+			}
+			else if (body.IsInGroup("Hazard"))
+			{
+				m_isTransitioning = true;
+				CrashSequence();
+			}
 		}
 	}
 
 	private void CrashSequence()
 	{
-		GetTree().ReloadCurrentScene();
+		SetProcess(false);
+		Tween tween = CreateTween();
+		tween.TweenInterval(1.0f);
+		tween.TweenCallback(Callable.From(GetTree().ReloadCurrentScene));
+		tween.Play();
 	}
 
-	private void CompleteLevel()
+	private void CompleteLevel(string next_level_file)
 	{
-		GetTree().Quit();
+        Tween tween = CreateTween();
+        tween.TweenInterval(1.0f);
 
+        tween.TweenCallback(Callable.From(() => GetTree().ChangeSceneToFile(next_level_file)));
+        tween.Play();
     }
 }
