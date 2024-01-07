@@ -4,20 +4,21 @@ using System.Diagnostics;
 
 public partial class Player : RigidBody3D
 {
-	/// <summary>
-	/// Text
-	/// </summary>
 	[Export(PropertyHint.Range, "750, 3000, 1.0")]
 	public float thrust = 1000.0f;
     [Export]
     public float torque = 100.0f;
 
 	private bool m_isTransitioning = false;
+	private AudioStreamPlayer explosionAudio;
+	private AudioStreamPlayer winAudio;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-	}
+		explosionAudio = GetNode<AudioStreamPlayer>("ExplosionAudio");
+        winAudio = GetNode<AudioStreamPlayer>("WinAudio");
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -62,8 +63,9 @@ public partial class Player : RigidBody3D
 	private void CrashSequence()
 	{
 		SetProcess(false);
+		explosionAudio.Play();
 		Tween tween = CreateTween();
-		tween.TweenInterval(1.0f);
+		tween.TweenInterval(2.5f);
 		tween.TweenCallback(Callable.From(GetTree().ReloadCurrentScene));
 		tween.Play();
 	}
@@ -71,8 +73,9 @@ public partial class Player : RigidBody3D
 	private void CompleteLevel(string next_level_file)
 	{
         SetProcess(false);
+		winAudio.Play();
         Tween tween = CreateTween();
-        tween.TweenInterval(1.0f);
+        tween.TweenInterval(2.5f);
         tween.TweenCallback(Callable.From(() => GetTree().ChangeSceneToFile(next_level_file)));
         tween.Play();
     }

@@ -62,5 +62,5 @@ transform = Transform3D(1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.4, 0)
 
 [node name="MovingHazard" parent="." instance=ExtResource("3_ownwb")]
-direction = Vector3(0, 2, 0)
+direction = Vector3(0, 4, 0)
 duration = 3.0
