@@ -16,6 +16,8 @@ public partial class Player : RigidBody3D
 	private GpuParticles3D boosterParticles;
     private GpuParticles3D leftboosterParticles;
     private GpuParticles3D rightboosterParticles;
+	private GpuParticles3D explosionParticles;
+	private GpuParticles3D winParticles;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -26,6 +28,8 @@ public partial class Player : RigidBody3D
 		boosterParticles = GetNode<GpuParticles3D>("BoosterParticles");
         leftboosterParticles = GetNode<GpuParticles3D>("LeftBoosterParticles");
         rightboosterParticles = GetNode<GpuParticles3D>("RightBoosterParticles");
+		explosionParticles = GetNode<GpuParticles3D>("ExplosionParticles");
+		winParticles = GetNode<GpuParticles3D>("SuccessParticles");
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -92,6 +96,7 @@ public partial class Player : RigidBody3D
 		boosterParticles.Emitting = false;
 		rightboosterParticles.Emitting = false;
 		leftboosterParticles.Emitting = false;
+		explosionParticles.Emitting = true;
 		Tween tween = CreateTween();
 		tween.TweenInterval(2.5f);
 		tween.TweenCallback(Callable.From(GetTree().ReloadCurrentScene));
@@ -101,6 +106,7 @@ public partial class Player : RigidBody3D
 	private void CompleteLevel(string next_level_file)
 	{
         SetProcess(false);
+		winParticles.Emitting = true;
 		winAudio.Play();
         Tween tween = CreateTween();
         tween.TweenInterval(2.5f);
