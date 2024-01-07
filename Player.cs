@@ -12,12 +12,14 @@ public partial class Player : RigidBody3D
 	private bool m_isTransitioning = false;
 	private AudioStreamPlayer explosionAudio;
 	private AudioStreamPlayer winAudio;
+	private AudioStreamPlayer3D engineAudio;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
 		explosionAudio = GetNode<AudioStreamPlayer>("ExplosionAudio");
         winAudio = GetNode<AudioStreamPlayer>("WinAudio");
+        engineAudio = GetNode<AudioStreamPlayer3D>("EngineAudio");
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,7 +28,15 @@ public partial class Player : RigidBody3D
 		if (Input.IsActionPressed("boost"))
 		{
 			ApplyCentralForce(MultiplyByFloat(Transform.Basis.Y,  (float)delta * thrust));
+			if(!engineAudio.Playing)
+			{
+				engineAudio.Play();
+			}
 		}
+		else
+		{
+            engineAudio.Stop();
+        }
 
 		if (Input.IsActionPressed("rotate_left"))
 		{
