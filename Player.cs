@@ -65,6 +65,11 @@ public partial class Player : RigidBody3D
         }
 		else
 		{  leftboosterParticles.Emitting = false;}
+
+		if(Input.IsActionJustPressed("ui_cancel"))
+		{
+			GetTree().Quit();
+		}
     }
 
     private Vector3 MultiplyByFloat(Vector3 left, float right)
